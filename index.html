@@ -2,11 +2,17 @@
 <html>
   <head>
     <meta name="viewport" content="initial-scale=1.0, user-scalable=no" />
+	<!-- <meta name="viewport" content="width=device-width"> -->
+	<meta name="mobile-web-app-capable" content="yes">
+	<link rel="shortcut icon" sizes="196x196" href="lab1_icon.jpg">
+	<title>mopub lab 1</title>
+	
     <style type="text/css">
       html { height: 100% }
       body { height: 100%; margin: 0; padding: 0 }
       #map-canvas { height: 120% }
     </style>
+	
     
 	
 		<script>
@@ -55,9 +61,11 @@
 			
 	// To add the marker to the map, use the 'map' property
 	var marker = new google.maps.Marker({
-	    position: myLatlng,
-	    map: map,
-	    title:"Hello World!"
+	    position: (59.347614, 18.072743),
+	    title:"Hello World!"});
+		
+	// To add the marker to the map, call setMap();
+marker.setMap(map);
 	 
 	 // Create a DIV to hold the control and call HomeControl()
 	var homeControlDiv = document.createElement('div');
