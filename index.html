@@ -3,7 +3,7 @@
   <head>
     <meta name="viewport" content="initial-scale=1.0, user-scalable=no" />
 	<!-- <meta name="viewport" content="width=device-width"> -->
-	<meta name="mobile-web-app-capable" content="yes">
+	<meta name="mobile-web-app-capable" content="yes"/>
 	<!-- <link rel="shortcut icon" sizes="196x196" href="/img/lab1_icon.jpg"> -->
 	<title>mopub lab 1</title>
 	<!-- <link rel="apple-touch-startup-image" href="/img/splash-startup.jpg"> -->
@@ -57,13 +57,6 @@
         var map = new google.maps.Map(document.getElementById("map-canvas"),mapOptions);
 		map.setTilt(45);
 			
-	// To add the marker to the map, use the 'map' property
-	var marker = new google.maps.Marker({
-	    position: (59.347614, 18.072743),
-	    title:"Hello World!"});
-		
-	// To add the marker to the map, call setMap();
-marker.setMap(map);
 	 
 	 // Create a DIV to hold the control and call HomeControl()
 	var homeControlDiv = document.createElement('div');
