@@ -23,9 +23,9 @@
       src="https://maps.googleapis.com/maps/api/js?key=AIzaSyAhGJJP-EAXcGuqFNbQns7n2g0uGM5WFGo&sensor=true">
     </script>
 	
-	<p id="demo">Click the button to get your coordinates:</p>
-	<button onclick="getLocation()">Try It</button>
-	<script>
+	<!-- <p id="demo">Click the button to get your coordinates:</p> -->
+	<!-- <button onclick="getLocation()">Try It</button> -->
+	<!-- <script>
 		var x=document.getElementById("demo");
 		function getLocation(){
 			if (navigator.geolocation){
@@ -39,7 +39,7 @@
 		function showPosition(position){
 			x.innerHTML="Latitude: " + position.coords.latitude + "<br>Longitude: " + position.coords.longitude;	
 		}
-	</script>
+	</script> -->
 	
     <script type="text/javascript">
 	var map;
@@ -97,6 +97,13 @@ function PanControl(panDiv, map, direction, panUI) {
 	else if(direction=="-"){
 		var zoomLevel = map.getZoom();
 		map.setZoom(zoomLevel - 1);}
+	else if(direction="here"){
+		if (navigator.geolocation){
+				navigator.geolocation.getCurrentPosition("Latitude: " + position.coords.latitude + "<br>Longitude: " + position.coords.longitude);
+		}
+		else{
+				alert("Geolocation is not supported by this browser.");
+		}}
   });
 
 }
@@ -138,6 +145,7 @@ function initialize() {
   var downUI;
   var zoomUI;
   var dezoomUI;
+  var hereUI;
   
   var panRightDiv = document.createElement('div');
   var panLeftDiv = document.createElement('div');
@@ -151,6 +159,7 @@ function initialize() {
   var downPanControl = new PanControl(panDownDiv, map, "down", downUI);
   var zoomControl = new PanControl(zoomDiv, map, "+", zoomUI);
   var dezoomControl = new PanControl(zoomDiv, map, "-", dezoomUI);
+  var dezoomControl = new PanControl(zoomDiv, map, "here", hereUI);
 
   //panControlDiv.index = 1;
   map.controls[google.maps.ControlPosition.RIGHT_CENTER].push(panRightDiv);
