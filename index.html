@@ -5,8 +5,10 @@
     <meta name="viewport" content="initial-scale=1.0, user-scalable=no" />
 	<meta name="viewport" content="width=device-width">
 	<meta name="mobile-web-app-capable" content="yes"/>
+	
 	<link rel="shortcut icon" size="196x196" href="img/lab1_icon.jpg">
 	<title>mopub lab 1</title>
+	
 	<link rel="apple-touch-startup-image" href="img/splash-startup.jpg">
 	<!-- iPhone 4, 4S and 2011 iPod Touch -->
 	<link rel="apple-touch-startup-image" href="startup-640x920.jpg" media="(max-device-width : 480px) and (-webkit-min-device-pixel-ratio : 2)">
@@ -23,24 +25,6 @@
       src="https://maps.googleapis.com/maps/api/js?key=AIzaSyAhGJJP-EAXcGuqFNbQns7n2g0uGM5WFGo&sensor=true">
     </script>
 	
-	<!-- <p id="demo">Click the button to get your coordinates:</p> -->
-	<!-- <button onclick="getLocation()">Try It</button> -->
-	<!-- <script>
-		var x=document.getElementById("demo");
-		function getLocation(){
-			if (navigator.geolocation){
-				navigator.geolocation.getCurrentPosition(showPosition);
-			}
-			else{
-				x.innerHTML="Geolocation is not supported by this browser.";
-			}
-		}
-	
-		function showPosition(position){
-			x.innerHTML="Latitude: " + position.coords.latitude + "<br>Longitude: " + position.coords.longitude;	
-		}
-	</script> -->
-	
     <script type="text/javascript">
 	var map;
 	var currentLocation;
@@ -49,14 +33,6 @@
 	var danFav = new google.maps.LatLng(59.334539, 18.062639);
 	var campus = new google.maps.LatLng(59.347324, 18.073580);
 	var library = new google.maps.LatLng(59.347917, 18.072785);
-	
-
-/**
- * The PanControl adds a control to the map that simply
- * returns the user to Chicago. This constructor takes
- * the control DIV as an argument.
- * @constructor
- */
  
  function showPosition(position){
 		currentLocation =  new google.maps.LatLng(position.coords.latitude, position.coords.longitude);
@@ -120,8 +96,9 @@ function PanControl(panDiv, map, direction, panUI) {
 }
 
 function centerOnMarker(map, marker){
-	map.setZoom(16);
+	//map.setZoom(16);
     map.setCenter(marker.getPosition());
+	alert("attempting to find marker");
 	}
 
 function initialize() {
