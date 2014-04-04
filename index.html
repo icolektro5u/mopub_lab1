@@ -39,7 +39,7 @@ function PanControl(panDiv, map, direction, panUI) {
   // Set CSS styles for the DIV containing the control
   // Setting padding to 5 px will offset the control
   // from the edge of the map
-  panDiv.style.padding = '5px';
+  //panDiv.style.padding = '5px';
 
   // Set CSS for the control border
   panUI = document.createElement('div');
@@ -48,15 +48,17 @@ function PanControl(panDiv, map, direction, panUI) {
   panUI.style.borderWidth = '2px';
   panUI.style.cursor = 'pointer';
   panUI.style.textAlign = 'center';
-  panUI.title = 'Click to pan ' + direction;
+  panUI.title = 'Click to go' + direction;
   panDiv.appendChild(panUI);
 
   // Set CSS for the control interior
   var panText = document.createElement('div');
   panText.style.fontFamily = 'Arial,sans-serif';
-  panText.style.fontSize = '12px';
-  panText.style.paddingLeft = '4px';
-  panText.style.paddingRight = '4px';
+  panText.style.fontSize = '28px';
+  panText.style.paddingLeft = '8px';
+  panText.style.paddingRight = '8px';
+  panText.style.paddingBottom = '8px';
+  panText.style.paddingTop = '8px';
   panText.innerHTML = '<b>'+direction+'</b>';
   panUI.appendChild(panText);
 
@@ -64,12 +66,18 @@ function PanControl(panDiv, map, direction, panUI) {
   google.maps.event.addDomListener(panUI, 'click', function() {
     if(direction=="right"){
 		map.panBy(100,0)}
-	if(direction=="left"){
+	else if(direction=="left"){
 		map.panBy(-100,0)}
-	if(direction=="up"){
+	else if(direction=="up"){
 		map.panBy(0,-100)}
 	else if(direction=="down"){
 		map.panBy(0,100)}
+	else if(direction=="ENHANCE"){
+		var zoomLevel = map.getZoom();
+		map.setZoom(zoomLevel + 1);}
+	else if(direction=="unenhance"){
+		var zoomLevel = map.getZoom();
+		map.setZoom(zoomLevel - 1);}
   });
 
 }
@@ -87,18 +95,32 @@ function initialize() {
   // Create the DIV to hold the control and
   // call the PanControl() constructor passing
   // in this DIV.
-  var panControlDiv = document.createElement('div');
   var rightUI;
   var leftUI;
   var upUI;
   var downUI;
-  var rightPanControl = new PanControl(panControlDiv, map, "right", rightUI);
-  var leftPanControl = new PanControl(panControlDiv, map, "left", leftUI);
-  var upPanControl = new PanControl(panControlDiv, map, "up", upUI);
-  var downPanControl = new PanControl(panControlDiv, map, "down", downUI);
+  var zoomUI;
+  var dezoomUI;
+  
+  var panRightDiv = document.createElement('div');
+  var panLeftDiv = document.createElement('div');
+  var panUpDiv = document.createElement('div');
+  var panDownDiv = document.createElement('div');
+  var zoomDiv = document.createElement('div');
+ 
+  var rightPanControl = new PanControl(panRightDiv, map, "right", rightUI);
+  var leftPanControl = new PanControl(panLeftDiv, map, "left", leftUI);
+  var upPanControl = new PanControl(panUpDiv, map, "up", upUI);
+  var downPanControl = new PanControl(panDownDiv, map, "down", downUI);
+  var zoomControl = new PanControl(zoomDiv, map, "ENHANCE", zoomUI);
+  var dezoomControl = new PanControl(zoomDiv, map, "unenhance", dezoomUI);
 
-  panControlDiv.index = 1;
-  map.controls[google.maps.ControlPosition.TOP_RIGHT].push(panControlDiv);
+  //panControlDiv.index = 1;
+  map.controls[google.maps.ControlPosition.RIGHT_CENTER].push(panRightDiv);
+  map.controls[google.maps.ControlPosition.LEFT_CENTER].push(panLeftDiv);
+  map.controls[google.maps.ControlPosition.TOP_CENTER].push(panUpDiv);
+  map.controls[google.maps.ControlPosition.BOTTOM_CENTER].push(panDownDiv);
+  map.controls[google.maps.ControlPosition.TOP_RIGHT].push(zoomDiv);
 }
 
 google.maps.event.addDomListener(window, 'load', initialize);
