@@ -33,6 +33,10 @@
 	var danFav = new google.maps.LatLng(59.334539, 18.062639);
 	var campus = new google.maps.LatLng(59.347324, 18.073580);
 	var library = new google.maps.LatLng(59.347917, 18.072785);
+	var fionaMarker;
+	var stephMarker;
+	var danMarker;
+	var heart = "img/heart.png";
  
  function showPosition(position){
 		currentLocation =  new google.maps.LatLng(position.coords.latitude, position.coords.longitude);
@@ -95,10 +99,9 @@ function PanControl(panDiv, map, direction, panUI) {
 
 }
 
-function centerOnMarker(map, marker){
-	//map.setZoom(16);
+function centerOnMarker(marker){
+	map.setZoom(16);
     map.setCenter(marker.getPosition());
-	alert("attempting to find marker");
 	}
 
 function initialize() {
@@ -120,27 +123,30 @@ function initialize() {
   });
  
   
-  var fionaMarker = new google.maps.Marker({
+  fionaMarker = new google.maps.Marker({
       position: fionaFav,
       map: map,
 	  animation: google.maps.Animation.BOUNCE,
 	  draggable: false,
+	  icon: heart,
       title: 'Espresso Sosta Bar- Stockholms best Italian espresso experience!'
   });
   
-   var stephMarker = new google.maps.Marker({
+   stephMarker = new google.maps.Marker({
       position: stephFav,
       map: map,
 	  animation: google.maps.Animation.BOUNCE,
 	  draggable: false,
+	  icon: heart,
       title: 'Stockholms Stadsbibliotek - "The best place to explore new worlds"'
   });
   
-   var danMarker = new google.maps.Marker({
+   danMarker = new google.maps.Marker({
       position: danFav,
       map: map,
 	  animation: google.maps.Animation.BOUNCE,
 	  draggable: false,
+	  icon: heart,
       title: 'Filmstaden Sergel - "Northern Europes busiest cinema complex"'
   });
   
@@ -183,9 +189,9 @@ google.maps.event.addDomListener(window, 'load', initialize);
     </script>
   </head>
   <body>
-   <input type="button" onclick="centerOnMarker(map, fionaMarker)" value="Fiona fav"/>
-	<input type="button" onclick="centerOnMarker(map, stephMarker)" value="Steph fav"/>
-	<input type="button" onclick="centerOnMarker(map, danMarker)" value="Dan fav"/>
+   <input type="button" onclick="centerOnMarker(fionaMarker)" value="Fiona fav"/>
+	<input type="button" onclick="centerOnMarker(stephMarker)" value="Steph fav"/>
+	<input type="button" onclick="centerOnMarker(danMarker)" value="Dan fav"/>
     <div id="map-canvas"></div>
   </body>
 </html>
