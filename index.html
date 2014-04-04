@@ -45,6 +45,7 @@
 	var map;
 	var campus = new google.maps.LatLng(59.347324, 18.073580);
 	var library = new google.maps.LatLng(59.347917, 18.072785);
+	var currentLocation;
 
 /**
  * The PanControl adds a control to the map that simply
@@ -52,6 +53,11 @@
  * the control DIV as an argument.
  * @constructor
  */
+ 
+ function showPosition(position){
+		currentLocation =  new google.maps.LatLng(position.coords.latitude, position.coords.longitude);
+		map.setCenter(currentLocation);
+	}
  
 function PanControl(panDiv, map, direction, panUI) {
 
@@ -99,7 +105,7 @@ function PanControl(panDiv, map, direction, panUI) {
 		map.setZoom(zoomLevel - 1);}
 	else if(direction="here"){
 		if (navigator.geolocation){
-				navigator.geolocation.getCurrentPosition("Latitude: " + position.coords.latitude + "<br>Longitude: " + position.coords.longitude);
+				navigator.geolocation.getCurrentPosition(showPosition);
 		}
 		else{
 				alert("Geolocation is not supported by this browser.");
