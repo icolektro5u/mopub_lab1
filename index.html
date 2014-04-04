@@ -1,78 +1,149 @@
 <!DOCTYPE html>
 <html manifest="cache.manifest.TODO">
+<!-- <html manifest="example.appcache"> -->
   <head>
     <meta name="viewport" content="initial-scale=1.0, user-scalable=no" />
-	<meta name="viewport" content="width=device-width"/>
+	<meta name="viewport" content="width=device-width">
 	<meta name="mobile-web-app-capable" content="yes"/>
+	<link rel="shortcut icon" size="196x196" href="img/lab1_icon.jpg">
 	<title>mopub lab 1</title>
-    <style>
-      html, body, #map-canvas {
-        height: 100%;
-        margin: 0px;
-        padding: 0px
-      }
+	<link rel="apple-touch-startup-image" href="img/splash-startup.jpg">
+	<!-- iPhone 4, 4S and 2011 iPod Touch -->
+	<link rel="apple-touch-startup-image" href="startup-640x920.jpg" media="(max-device-width : 480px) and (-webkit-min-device-pixel-ratio : 2)">
+	<!-- iPhone 5 and 2012 iPod Touch -->
+	<link rel="apple-touch-startup-image" href="startup-640x1096.jpg" media="(max-device-width : 548px) and (-webkit-min-device-pixel-ratio : 2)">
+	
+    <style type="text/css">
+      html { height: 100% }
+      body { height: 100%; margin: 0; padding: 0 }
+      #map-canvas { height: 100% }
     </style>
-    <!--
-    Include the maps javascript with sensor=true because this code is using a
-    sensor (a GPS locator) to determine the user's location.
-    See: https://developers.google.com/maps/documentation/javascript/tutorial#Loading_the_Maps_API
-    -->
-    <script src="https://maps.googleapis.com/maps/api/js?v=3.exp&sensor=true"></script>
+	
+    <script type="text/javascript"
+      src="https://maps.googleapis.com/maps/api/js?key=AIzaSyAhGJJP-EAXcGuqFNbQns7n2g0uGM5WFGo&sensor=true">
+    </script>
+	
+    <script type="text/javascript">
+	var map;
+	var campus = new google.maps.LatLng(59.347324, 18.073580);
+	var library = new google.maps.LatLng(59.347917, 18.072785);
 
-    <script>
-// Note: This example requires that you consent to location sharing when
-// prompted by your browser. If you see a blank space instead of the map, this
-// is probably because you have denied permission for location sharing.
+/**
+ * The PanControl adds a control to the map that simply
+ * returns the user to Chicago. This constructor takes
+ * the control DIV as an argument.
+ * @constructor
+ */
+ 
+function PanControl(panDiv, map, direction, panUI) {
 
-var map;
+  // Set CSS styles for the DIV containing the control
+  // Setting padding to 5 px will offset the control
+  // from the edge of the map
+  //panDiv.style.padding = '5px';
 
-function initialize() {
-  var mapOptions = {
-    zoom: 6
-  };
-  map = new google.maps.Map(document.getElementById('map-canvas'),
-      mapOptions);
+  // Set CSS for the control border
+  panUI = document.createElement('div');
+  panUI.style.backgroundColor = 'white';
+  panUI.style.borderStyle = 'solid';
+  panUI.style.borderWidth = '2px';
+  panUI.style.cursor = 'pointer';
+  panUI.style.textAlign = 'center';
+  panUI.title = 'Click to go' + direction;
+  panDiv.appendChild(panUI);
 
-  // Try HTML5 geolocation
-  if(navigator.geolocation) {
-    navigator.geolocation.getCurrentPosition(function(position) {
-      var pos = new google.maps.LatLng(position.coords.latitude,
-                                       position.coords.longitude);
+  // Set CSS for the control interior
+  var panText = document.createElement('div');
+  panText.style.fontFamily = 'Arial,sans-serif';
+  panText.style.fontSize = '28px';
+  panText.style.paddingLeft = '8px';
+  panText.style.paddingRight = '8px';
+  panText.style.paddingBottom = '8px';
+  panText.style.paddingTop = '8px';
+  panText.innerHTML = '<b>'+direction+'</b>';
+  panUI.appendChild(panText);
 
-      var infowindow = new google.maps.InfoWindow({
-        map: map,
-        position: pos,
-        content: 'Location found using HTML5.'
-      });
+  // Setup the click event listeners: 
+  google.maps.event.addDomListener(panUI, 'click', function() {
+    if(direction=="right"){
+		map.panBy(100,0)}
+	else if(direction=="left"){
+		map.panBy(-100,0)}
+	else if(direction=="up"){
+		map.panBy(0,-100)}
+	else if(direction=="down"){
+		map.panBy(0,100)}
+	else if(direction=="+"){
+		var zoomLevel = map.getZoom();
+		map.setZoom(zoomLevel + 1);}
+	else if(direction=="-"){
+		var zoomLevel = map.getZoom();
+		map.setZoom(zoomLevel - 1);}
+  });
 
-      map.setCenter(pos);
-    }, function() {
-      handleNoGeolocation(true);
-    });
-  } else {
-    // Browser doesn't support Geolocation
-    handleNoGeolocation(false);
-  }
 }
 
-function handleNoGeolocation(errorFlag) {
-  if (errorFlag) {
-    var content = 'Error: The Geolocation service failed.';
-  } else {
-    var content = 'Error: Your browser doesn\'t support geolocation.';
+function initialize() {
+  var mapDiv = document.getElementById('map-canvas');
+  var mapOptions = {
+    zoom: 16,
+    center: campus,
+	mapTypeId: google.maps.MapTypeId.HYBRID,
+	disableDefaultUI: true	
   }
+  map = new google.maps.Map(mapDiv, mapOptions);
+  
+  
 
-  var options = {
-    map: map,
-    position: new google.maps.LatLng(60, 105),
-    content: content
-  };
+  var marker1 = new google.maps.Marker({
+      position: campus,
+      map: map,
+	  animation: google.maps.Animation.DROP,
+	  draggable: true,
+      title: 'Draggable Dropped Marker'
+  });
+  
+  var marker2 = new google.maps.Marker({
+      position: library,
+      map: map,
+	  animation: google.maps.Animation.BOUNCE,
+	  draggable: false,
+      title: 'Non-draggable Bouncy Marker'
+  });
+  
+  // Create the DIV to hold the control and
+  // call the PanControl() constructor passing
+  // in this DIV.
+  var rightUI;
+  var leftUI;
+  var upUI;
+  var downUI;
+  var zoomUI;
+  var dezoomUI;
+  
+  var panRightDiv = document.createElement('div');
+  var panLeftDiv = document.createElement('div');
+  var panUpDiv = document.createElement('div');
+  var panDownDiv = document.createElement('div');
+  var zoomDiv = document.createElement('div');
+ 
+  var rightPanControl = new PanControl(panRightDiv, map, "right", rightUI);
+  var leftPanControl = new PanControl(panLeftDiv, map, "left", leftUI);
+  var upPanControl = new PanControl(panUpDiv, map, "up", upUI);
+  var downPanControl = new PanControl(panDownDiv, map, "down", downUI);
+  var zoomControl = new PanControl(zoomDiv, map, "+", zoomUI);
+  var dezoomControl = new PanControl(zoomDiv, map, "-", dezoomUI);
 
-  var infowindow = new google.maps.InfoWindow(options);
-  map.setCenter(options.position);
+  //panControlDiv.index = 1;
+  map.controls[google.maps.ControlPosition.RIGHT_CENTER].push(panRightDiv);
+  map.controls[google.maps.ControlPosition.LEFT_CENTER].push(panLeftDiv);
+  map.controls[google.maps.ControlPosition.TOP_CENTER].push(panUpDiv);
+  map.controls[google.maps.ControlPosition.BOTTOM_CENTER].push(panDownDiv);
+  map.controls[google.maps.ControlPosition.TOP_RIGHT].push(zoomDiv);
 }
 
 google.maps.event.addDomListener(window, 'load', initialize);
+
 
     </script>
   </head>
