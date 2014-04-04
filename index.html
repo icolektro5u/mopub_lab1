@@ -112,8 +112,8 @@ function initialize() {
   var leftPanControl = new PanControl(panLeftDiv, map, "left", leftUI);
   var upPanControl = new PanControl(panUpDiv, map, "up", upUI);
   var downPanControl = new PanControl(panDownDiv, map, "down", downUI);
-  var zoomControl = new PanControl(zoomDiv, map, "ENHANCE", zoomUI);
-  var dezoomControl = new PanControl(zoomDiv, map, "unenhance", dezoomUI);
+  var zoomControl = new PanControl(zoomDiv, map, "+", zoomUI);
+  var dezoomControl = new PanControl(zoomDiv, map, "-", dezoomUI);
 
   //panControlDiv.index = 1;
   map.controls[google.maps.ControlPosition.RIGHT_CENTER].push(panRightDiv);
